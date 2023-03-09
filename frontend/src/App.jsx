@@ -4,7 +4,7 @@ import './searchBar'
 import './App.css'
 import SearchBar from './searchBar'
 import Header from './header'
-import Example from './imageSlider'
+import Slider from './imageSlider'
 
 export default function App(){
   return (
@@ -13,7 +13,7 @@ export default function App(){
       <div className='search-bar'>
         <SearchBar/>
       </div>
-      <Example />
+      <Slider />
     </div>
   )
 }

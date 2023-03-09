@@ -4,7 +4,7 @@ import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import './imageSlider.css'
 
-const Example = () => {
+const Slider = () => {
     const images = [
         "https://media.architecturaldigest.com/photos/57ad893acfc37bc171ad8082/2:1/w_5122,h_2561,c_limit/madrid-travel-guide.jpg",
         "https://www.nomadicmatt.com/wp-content/uploads/2018/01/parisguide-1.jpg",
@@ -51,4 +51,4 @@ const Example = () => {
     );
 };
 
-export default Example;
+export default Slider;
