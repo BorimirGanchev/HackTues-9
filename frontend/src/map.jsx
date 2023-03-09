@@ -1,96 +1,80 @@
-import React, { useState, useRef, useCallback } from "react";
-import ReactDOM from "react-dom";
-import { LoadScript, GoogleMap, Polygon } from "@react-google-maps/api";
-
+import React, { useState } from "react";
 import "./App.css";
+import { GoogleMap, Polygon, useJsApiLoader } from '@react-google-maps/api';
 
+const containerStyle = {
+  width: '400px',
+  height: '400px'
+};
 
-// Finally we clean up the refs with `onUnmount`
+const center = {
+  lat: 52.52047739093263, lng: 13.36653284549709
+};
 
-export default function Map() {
-  // Store Polygon path in state
-  const [path, setPath] = useState([
-    { lat: 52.52549080781086, lng: 13.398118538856465 },
+function Map() {
+    const [path, setPath] = useState(
+      [
+    [
+      { lat: 52.52549080781086, lng: 13.398118538856465 },
     { lat: 52.48578559055679, lng: 13.36653284549709 },
-    { lat: 52.48871246221608, lng: 13.44618372440334 }
-  ]);
+    { lat: 52.48871246221608, lng: 13.44618372440334 },
+    { lat: 52.52549080781086, lng: 13.398118538856465 }
+  ],
+  [
+    { lat: 42.52549080781086, lng: 13.398118538856465 },
+  { lat: 42.48578559055679, lng: 13.36653284549709 },
+  { lat: 42.48871246221608, lng: 13.44618372440334 },
+  { lat: 42.52549080781086, lng: 13.398118538856465 }
+],
+[
+  { lat: 32.52549080781086, lng: 13.398118538856465 },
+{ lat: 32.48578559055679, lng: 13.36653284549709 },
+{ lat: 32.48871246221608, lng: 13.44618372440334 },
+{ lat: 32.52549080781086, lng: 13.398118538856465 }
+],
+    ]
+  );//will be an array passed by database
 
-  // Define refs for Polygon instance and listeners
-  const polygonRef = useRef(null);
-  const listenersRef = useRef([]);
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyCUA92dD6oKA7zAtGPfgYSj6ka9paVhRvg"
+  })
 
-  // Call setPath with new edited path
-  const onEdit = useCallback(() => {
-    if (polygonRef.current) {
-      const nextPath = polygonRef.current
-        .getPath()
-        .getArray()
-        .map(latLng => {
-          return { lat: latLng.lat(), lng: latLng.lng() };
-        });
-      setPath(nextPath);
-    }
-  }, [setPath]);
+  const [map, setMap] = React.useState(null)
 
-  // Bind refs to current Polygon and listeners
-  const onLoad = useCallback(
-    polygon => {
-      polygonRef.current = polygon;
-      const path = polygon.getPath();
-      listenersRef.current.push(
-        path.addListener("set_at", onEdit),
-        path.addListener("insert_at", onEdit),
-        path.addListener("remove_at", onEdit)
-      );
-    },
-    [onEdit]
-  );
+  const onLoad = React.useCallback(function callback(map) {
+    // This is just an example of getting and using the map instance!!! don't just blindly copy!
+    const bounds = new window.google.maps.LatLngBounds(center);
+    map.fitBounds(bounds);
+    setMap(map)
+  }, [])
 
-  // Clean up refs
-  const onUnmount = useCallback(() => {
-    listenersRef.current.forEach(lis => lis.remove());
-    polygonRef.current = null;
-  }, []);
+  const onUnmount = React.useCallback(function callback(map) {
+    setMap(null)
+  }, [])
 
-  console.log("The path state is", path);
-
-  return (
-    <div className="App">
-      <LoadScript
-        id="script-loader"
-        googleMapsApiKey=
-        "AIzaSyCUA92dD6oKA7zAtGPfgYSj6ka9paVhRvg"
-        language="en"
-        region="us"
+  return isLoaded ? (
+      <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
       >
-        <GoogleMap
-          mapContainerClassName="App-map"
-          center={{ lat: 52.52047739093263, lng: 13.36653284549709 }}
-          zoom={12}
-          version="weekly"
-          on
-        >
-          <Polygon
-            // Make the Polygon editable / draggable
-            editable
-            draggable
-            path={path}
-            // Event used when manipulating and adding points
-            onMouseUp={onEdit}
-            // Event used when dragging the whole Polygon
-            onDragEnd={onEdit}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
-          options = {{
-            fillColor: "yellow",
-            fillOpacity: 0.4,
-            strokeColor: "#d35400",
-            strokeOpacity: 0.8,
-            strokeWeight: 3
-        }}
-          />
-        </GoogleMap>
-      </LoadScript>
-    </div>
-  );
+        { /* Child components, such as markers, info windows, etc. */ }
+        <Polygon 
+        paths={path}
+        options={{
+          fillColor: "red",
+          fillOpacity: 0.4,
+          strokeColor: "#d35400",
+          strokeOpacity: 0.8,
+          strokeWeight: 3
+      }}>
+
+        </Polygon>
+      </GoogleMap>
+  ) : <></>
 }
+
+export default React.memo(Map) 

@@ -21,5 +21,9 @@ const UserSchema = new mongoose.Schema({
     required: [true, "must provide password."],
   },
 });
-
+const PolyScheme = mongoose.Schema({
+  coordinates: {
+    type: Array,
+  },
+});
 module.exports = mongoose.model("User", UserSchema);
