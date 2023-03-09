@@ -8,7 +8,7 @@ import Slider from './imageSlider'
 
 export default function App(){
   return (
-    <div>
+    <div className='main-container'>
       <Header/>
       <div className='search-bar'>
         <SearchBar/>
