@@ -18,25 +18,27 @@ const getUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req,res) => {
+const deleteUser = async (req, res) => {
   try {
-    const {user : {userId}} = req
+    const {
+      user: { userId },
+    } = req;
     const User = await User.findByIdAndRemove({
-      _id: {userId},
-    })
+      _id: { userId },
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-const updateUser = async (req,res) => {
-  try{
-    const {name} = req;
+const updateUser = async (req, res) => {
+  try {
+    const { name } = req;
     const user = await User.updateOne({
-      name:name
-    })
-  }catch(err){
-    console.log(err)
+      name: name,
+    });
+  } catch (err) {
+    console.log(err);
   }
-}
-module.exports = { createUser,getUser,deleteUser };
+};
+module.exports = { createUser, getUser, deleteUser, updateUser };
