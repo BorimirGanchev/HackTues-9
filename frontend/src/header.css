@@ -1,0 +1,12 @@
+.header-container{
+   background-color:   #71287991;   
+    border: none;   
+    /*box-shadow: 0 4px 8px rgba(255, 0, 0, 0.1);*/
+}
+
+.page-name {
+    padding-left: 60px;
+    font-size: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
