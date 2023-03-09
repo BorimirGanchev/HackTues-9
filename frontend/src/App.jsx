@@ -4,6 +4,7 @@ import './searchBar'
 import './App.css'
 import SearchBar from './searchBar'
 import Header from './header'
+import Slider from './imageSlider'
 
 export default function App(){
   return (
@@ -12,6 +13,7 @@ export default function App(){
       <div className='search-bar'>
         <SearchBar/>
       </div>
+      <Slider />
     </div>
   )
 }
