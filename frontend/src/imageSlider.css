@@ -3,7 +3,8 @@
     align-items: center;
     justify-content: center;
     background-size: cover;
-    height: 350px;
+    margin-top: 10%;
+    height: 10%;
   }
   
   .each-slide-effect span {
