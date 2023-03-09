@@ -3,8 +3,8 @@ import "./App.css";
 import { GoogleMap, Polygon, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '400px',
-  height: '400px'
+  width: '100vw',
+  height: '100vh'
 };
 
 const center = {
