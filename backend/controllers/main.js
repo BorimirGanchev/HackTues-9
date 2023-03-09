@@ -1,11 +1,15 @@
-const User = require("../models/main");
-
+const User = require("../models/User");
+const Poly = require("../models/Poly");
 const createUser = async (req, res) => {
   try {
-    const new_user = await User.create({ ...req.body });
+    const new_user = await User.create({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+    });
     res.status(200).json({ new_user });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ err });
   }
 };
 
@@ -20,27 +24,48 @@ const getUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const {
-      user: { userId },
-    } = req;
-    const User = await User.findByIdAndRemove({
-      _id: { userId },
-    });
+    const user = await User.findOneAndDelete({ username: req.body.username });
+    res.ststus(200).json({ user });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ error });
   }
 };
 
 const updateUser = async (req, res) => {
   try {
-    const { name } = req;
-    const user = await User.updateOne({
-      name: name,
-    });
+    const filter = { username: req.body.old_name };
+    const update = { username: req.body.new_name };
+    let user = await User.findOneAndUpdate(filter, update);
+    user = await User.findOne(update);
+    res.status(200).json({ user });
+  } catch (err) {
+    res.status(500).json({ err });
+  }
+};
+
+const add_poly = async (req, res) => {
+  try {
+    const new_poly = Poly.create({ coordinates: req.body.coordinates });
+    res.status(200).json({ new_poly });
   } catch (err) {
     console.log(err);
   }
 };
 
-const add_poly = async();
-module.exports = { createUser, getUser, deleteUser, updateUser };
+const get_all_polies = async (req, res) => {
+  try {
+    const all_pollies = Poly.find({});
+    //res.status(200).json({ all_pollies });
+    console.log(all_pollies);
+  } catch (err) {
+    console.log(err);
+  }
+};
+module.exports = {
+  createUser,
+  getUser,
+  deleteUser,
+  updateUser,
+  add_poly,
+  get_all_polies,
+};
