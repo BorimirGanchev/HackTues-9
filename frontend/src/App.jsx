@@ -6,7 +6,7 @@ import SearchBar from './searchBar'
 
 export default function App(){
   return (
-    <div>
+    <div className='search-bar'>
       <SearchBar/>
     </div>
   )

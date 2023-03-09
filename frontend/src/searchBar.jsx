@@ -10,13 +10,15 @@ export default function SearchBar() {
     }
 
     return (
-        <div>
-            <form>
+        <div className='form-container'>
+            <form className='destination-form'>
                 <input
                     type="text"
                     placeholder="Destination"
-                    onChange={handleChange}/>
-                <input type="submit" value="Submit" />
+                    onChange={handleChange}
+                    className="dest-input"
+                    id='destination-input'/>
+                <input type="submit" value="Submit" className="dest-input" id='submit-destination'/>
             </form>
         </div>
     )
