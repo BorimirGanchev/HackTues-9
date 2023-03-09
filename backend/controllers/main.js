@@ -9,4 +9,12 @@ const createUser = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const user = await User.find({ username: req.params.username });
+    res.status(200).json({ user: user });
+  } catch (err) {
+    console.log(err);
+  }
+};
 module.exports = { createUser };

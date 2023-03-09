@@ -1,152 +1,96 @@
-import {
-    Box,
-    Button,
-    ButtonGroup,
-    Flex,
-    HStack,
-    IconButton,
-    Input,
-    SkeletonText,
-    Text,
-  } from '@chakra-ui/react'
-  import { FaLocationArrow, FaTimes } from 'react-icons/fa'
-  
-  import {
-    useJsApiLoader,
-    GoogleMap,
-    Marker,
-    Autocomplete,
-    DirectionsRenderer,
-  } from '@react-google-maps/api'
-  import { useRef, useState } from 'react'
-  
-  const center = { lat: 48.8584, lng: 2.2945 }
-  
-  function Map() {
-    const { isLoaded } = useJsApiLoader({
-      googleMapsApiKey: "AIzaSyCUA92dD6oKA7zAtGPfgYSj6ka9paVhRvg",
-      libraries: ['places'],
-    })
-  
-    const [map, setMap] = useState(/** @type google.maps.Map */ (null))
-    const [directionsResponse, setDirectionsResponse] = useState(null)
-    const [distance, setDistance] = useState('')
-    const [duration, setDuration] = useState('')
-  
-    /** @type React.MutableRefObject<HTMLInputElement> */
-    const originRef = useRef()
-    /** @type React.MutableRefObject<HTMLInputElement> */
-    const destiantionRef = useRef()
-  
-    if (!isLoaded) {
-      return <SkeletonText />
+import React, { useState, useRef, useCallback } from "react";
+import ReactDOM from "react-dom";
+import { LoadScript, GoogleMap, Polygon } from "@react-google-maps/api";
+
+import "./App.css";
+
+
+// Finally we clean up the refs with `onUnmount`
+
+export default function Map() {
+  // Store Polygon path in state
+  const [path, setPath] = useState([
+    { lat: 52.52549080781086, lng: 13.398118538856465 },
+    { lat: 52.48578559055679, lng: 13.36653284549709 },
+    { lat: 52.48871246221608, lng: 13.44618372440334 }
+  ]);
+
+  // Define refs for Polygon instance and listeners
+  const polygonRef = useRef(null);
+  const listenersRef = useRef([]);
+
+  // Call setPath with new edited path
+  const onEdit = useCallback(() => {
+    if (polygonRef.current) {
+      const nextPath = polygonRef.current
+        .getPath()
+        .getArray()
+        .map(latLng => {
+          return { lat: latLng.lat(), lng: latLng.lng() };
+        });
+      setPath(nextPath);
     }
-  
-    async function calculateRoute() {
-      if (originRef.current.value === '' || destiantionRef.current.value === '') {
-        return
-      }
-      // eslint-disable-next-line no-undef
-      const directionsService = new google.maps.DirectionsService()
-      const results = await directionsService.route({
-        origin: originRef.current.value,
-        destination: destiantionRef.current.value,
-        // eslint-disable-next-line no-undef
-        travelMode: google.maps.TravelMode.DRIVING,
-      })
-      setDirectionsResponse(results)
-      setDistance(results.routes[0].legs[0].distance.text)
-      setDuration(results.routes[0].legs[0].duration.text)
-    }
-  
-    function clearRoute() {
-      setDirectionsResponse(null)
-      setDistance('')
-      setDuration('')
-      originRef.current.value = ''
-      destiantionRef.current.value = ''
-    }
-  
-    return (
-      <Flex
-        position='relative'
-        flexDirection='column'
-        alignItems='center'
-        h='100vh'
-        w='100vw'
+  }, [setPath]);
+
+  // Bind refs to current Polygon and listeners
+  const onLoad = useCallback(
+    polygon => {
+      polygonRef.current = polygon;
+      const path = polygon.getPath();
+      listenersRef.current.push(
+        path.addListener("set_at", onEdit),
+        path.addListener("insert_at", onEdit),
+        path.addListener("remove_at", onEdit)
+      );
+    },
+    [onEdit]
+  );
+
+  // Clean up refs
+  const onUnmount = useCallback(() => {
+    listenersRef.current.forEach(lis => lis.remove());
+    polygonRef.current = null;
+  }, []);
+
+  console.log("The path state is", path);
+
+  return (
+    <div className="App">
+      <LoadScript
+        id="script-loader"
+        googleMapsApiKey=
+        "AIzaSyCUA92dD6oKA7zAtGPfgYSj6ka9paVhRvg"
+        language="en"
+        region="us"
       >
-        <Box position='absolute' left={0} top={0} h='100%' w='100%'>
-          {/* Google Map Box */}
-          <GoogleMap
-            center={center}
-            zoom={15}
-            mapContainerStyle={{ width: '100%', height: '100%' }}
-            options={{
-              zoomControl: false,
-              streetViewControl: false,
-              mapTypeControl: false,
-              fullscreenControl: false,
-            }}
-            onLoad={map => setMap(map)}
-          >
-            <Marker position={center} />
-            {directionsResponse && (
-              <DirectionsRenderer directions={directionsResponse} />
-            )}
-          </GoogleMap>
-        </Box>
-        <Box
-          p={4}
-          borderRadius='lg'
-          m={4}
-          bgColor='white'
-          shadow='base'
-          minW='container.md'
-          zIndex='1'
+        <GoogleMap
+          mapContainerClassName="App-map"
+          center={{ lat: 52.52047739093263, lng: 13.36653284549709 }}
+          zoom={12}
+          version="weekly"
+          on
         >
-          <HStack spacing={2} justifyContent='space-between'>
-            <Box flexGrow={1}>
-              <Autocomplete>
-                <Input type='text' placeholder='Origin' ref={originRef} />
-              </Autocomplete>
-            </Box>
-            <Box flexGrow={1}>
-              <Autocomplete>
-                <Input
-                  type='text'
-                  placeholder='Destination'
-                  ref={destiantionRef}
-                />
-              </Autocomplete>
-            </Box>
-  
-            <ButtonGroup>
-              <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
-                Calculate Route
-              </Button>
-              <IconButton
-                aria-label='center back'
-                icon={<FaTimes />}
-                onClick={clearRoute}
-              />
-            </ButtonGroup>
-          </HStack>
-          <HStack spacing={4} mt={4} justifyContent='space-between'>
-            <Text>Distance: {distance} </Text>
-            <Text>Duration: {duration} </Text>
-            <IconButton
-              aria-label='center back'
-              icon={<FaLocationArrow />}
-              isRound
-              onClick={() => {
-                map.panTo(center)
-                map.setZoom(15)
-              }}
-            />
-          </HStack>
-        </Box>
-      </Flex>
-    )
-  }
-  
-  export default Map
+          <Polygon
+            // Make the Polygon editable / draggable
+            editable
+            draggable
+            path={path}
+            // Event used when manipulating and adding points
+            onMouseUp={onEdit}
+            // Event used when dragging the whole Polygon
+            onDragEnd={onEdit}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+          options = {{
+            fillColor: "yellow",
+            fillOpacity: 0.4,
+            strokeColor: "#d35400",
+            strokeOpacity: 0.8,
+            strokeWeight: 3
+        }}
+          />
+        </GoogleMap>
+      </LoadScript>
+    </div>
+  );
+}
