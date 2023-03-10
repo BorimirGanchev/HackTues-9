@@ -43,4 +43,10 @@ div{
     font-size: 20px;
     background: #efefef;
     text-align: center;
-  }
+}
+
+.add-button {
+    font-size: 90 rem;
+    z-index:100;
+    border:5px solid red;
+}
