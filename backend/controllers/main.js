@@ -55,8 +55,8 @@ const add_poly = async (req, res) => {
 
 const get_all_polies = async (req, res) => {
   try {
-    const all_pollies = Poly.find({});
-    //res.status(200).json({ all_pollies });
+    const all_pollies = await Poly.find({}).exec();
+    res.status(200).json({ all_pollies });
     console.log(all_pollies);
   } catch (err) {
     console.log(err);
