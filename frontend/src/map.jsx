@@ -52,10 +52,15 @@ function Map() {
       })
       // coordinates.push(coordinates[0]);
       setCoordinates((prev) => ([...prev, coordinates[0]]));
+      setCoordinates((prev) => {
+        var arr = prev;
+        arr.push(coordinates[0])
+        return arr;
+      })
       console.dir(coordinates)
+      const data = {coordinates}
       try{
-        const send_coordinates = axios.post('http://localhost:3000/users/poly',{ crossDomain: true },{coordinates:coordinates})
-        console.dir("coordinates: " + coordinates);
+        const send_coordinates = axios.post('http://localhost:3000/users/poly',data, { headers: { 'Content-Type': 'application/json'}})
       }catch(err) {
         console.log(err);
       }

@@ -19,13 +19,13 @@ export default function SearchBar() {
 
     return (
         <div>
-            <div className='form-container'>
+            <div className='form-container w-[100vw] '>
                 <form className='destination-form' onSubmit={handleSumbit}>
                         <input
                             type="text"
                             placeholder="Destination"
                             onChange={handleChange}
-                            className="dest-input"
+                            className="dest-input w-[70vw] "
                             id='destination-input'/> 
                     <input type="submit" value="Submit" className="dest-input" id='submit-destination'/>
                 </form>

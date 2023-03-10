@@ -6,7 +6,7 @@ import Slider from './imageSlider'
 
 export default function Homepage () {
     return (
-      <div className='main-container'>
+      <div className='main-container '>
         <Header/>
         <div className='search-bar'>
           <SearchBar/>
