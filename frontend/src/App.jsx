@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
+import Homepage from './Homepage';
 import {
   Route,
   Routes,
@@ -15,6 +15,7 @@ export default function App(){
     <BrowserRouter>
    <Routes>
     <Route path = '/map' element = {<Map />}/>
+    <Route path = '/' element = {<Homepage />}/>
    </Routes>
    </BrowserRouter>
    )

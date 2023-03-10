@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
-import { GoogleMap, Polygon, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Polygon, useJsApiLoader, Marker} from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '400px',
-  height: '400px'
+  width: '100vw',
+  height: '100vh'
 };
 
 const center = {
@@ -12,6 +12,19 @@ const center = {
 };
 
 function Map() {
+
+    const [markerPosition, setMarkerPosition] = useState(null);
+
+    const handleMapClick = (event) => {
+      const latLng = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+      setMarkerPosition(latLng);
+      console.log(event.latLng.lat())
+      console.log(event.latLng.lng())
+    };
+
     const [path, setPath] = useState(
       [
     [
@@ -55,6 +68,7 @@ function Map() {
 
   return isLoaded ? (
       <GoogleMap
+          onClick={handleMapClick}
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
@@ -63,16 +77,17 @@ function Map() {
       >
         { /* Child components, such as markers, info windows, etc. */ }
         <Polygon 
-        paths={path}
-        options={{
-          fillColor: "red",
-          fillOpacity: 0.4,
-          strokeColor: "#d35400",
-          strokeOpacity: 0.8,
-          strokeWeight: 3
-      }}>
+          paths={path}
+          options={{
+            fillColor: "red",
+            fillOpacity: 0.4,
+            strokeColor: "#d35400",
+            strokeOpacity: 0.8,
+            strokeWeight: 3
+          }}>
 
         </Polygon>
+        {markerPosition && <Marker position={markerPosition} />}
       </GoogleMap>
   ) : <></>
 }
