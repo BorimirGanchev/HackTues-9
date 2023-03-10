@@ -12,6 +12,8 @@ const center = {
 };
 
 function Map() {
+
+
     const [path, setPath] = useState(
       [
     [
@@ -63,14 +65,14 @@ function Map() {
       >
         { /* Child components, such as markers, info windows, etc. */ }
         <Polygon 
-        paths={path}
-        options={{
-          fillColor: "red",
-          fillOpacity: 0.4,
-          strokeColor: "#d35400",
-          strokeOpacity: 0.8,
-          strokeWeight: 3
-      }}>
+          paths={path}
+          options={{
+            fillColor: "red",
+            fillOpacity: 0.4,
+            strokeColor: "#d35400",
+            strokeOpacity: 0.8,
+            strokeWeight: 3
+          }}>
 
         </Polygon>
       </GoogleMap>
