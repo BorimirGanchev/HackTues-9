@@ -8,7 +8,7 @@ require("dotenv").config();
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:5173"],
   })
 );
 
@@ -27,7 +27,7 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl:
-        "mongodb+srv://HackTues:HackTues@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority",
+        "mongodb+srv://user123:user123@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority",
     }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
@@ -40,7 +40,7 @@ const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connection_to_db(
-      "mongodb+srv://HackTues:HackTues@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority"
+      "mongodb+srv://user123:user123@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority"
     );
     app.listen(port, () => {
       console.log("server is listening on port " + port);

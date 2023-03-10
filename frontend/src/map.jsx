@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import { GoogleMap, Polygon, useJsApiLoader, Marker } from '@react-google-maps/api';
 import axios from 'axios';
-import AddMenu from "./AddMenu";
 
 const containerStyle = {
   width: '100vw',
@@ -19,8 +18,7 @@ function Map() {
   const [mapClicks, setMapClicks] = useState(0);
   const [path, setPath] = useState([]);//will be an array passed by database
   const [map, setMap] = React.useState(null)
-
-  var coordinates = []
+  const [coordinates, setCoordinates]=useState([]);
 
   const getPolies = async () => {
      try
@@ -45,15 +43,24 @@ function Map() {
       setCanClick((prevState) => {
         return !prevState;
       })
-      console.log("===============" + canClick);
   }
 
   const canBeClicked = (mapClick) => {
-    if(mapClick >= 2) {
+    if(mapClick > 2) {
       setCanClick((prevState) => {
         return !prevState;
       })
+      // coordinates.push(coordinates[0]);
+      setCoordinates((prev) => ([...prev, coordinates[0]]));
+      console.dir(coordinates)
+      try{
+        const send_coordinates = axios.post('http://localhost:3000/users/poly',{ crossDomain: true },{coordinates:coordinates})
+        console.dir("coordinates: " + coordinates);
+      }catch(err) {
+        console.log(err);
+      }
       setMapClicks(0)
+      setCoordinates([]);
     }
   }
 
@@ -63,11 +70,10 @@ function Map() {
       lng: event.latLng.lng()
     };
     setMarkerPosition(latLng);
-    console.log(event.latLng.lat());
-    console.log(event.latLng.lng());
 
     if(canClick) {
-      coordinates[mapClicks] = {latLng}
+      // coordinates.push(latLng);
+      setCoordinates((prev) => ([...prev, latLng]));
       setMapClicks(mapClicks + 1)
       console.log(coordinates)
       console.log(mapClicks)
@@ -108,7 +114,7 @@ function Map() {
       onClick={handleMapClick}
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={1}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
