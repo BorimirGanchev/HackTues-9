@@ -10,23 +10,17 @@ import {
 
 import './App.css'
 import Map from './map'
-import SearchBar from './searchBar'
-import Header from './header'
-import Slider from './imageSlider'
 
-import logo from './logo.svg';
-import { Login} from "./login"
-import { Register} from "./register"
 
-import Navbar from './Navbar'
-import './Navbar.css'
+
+
 
 export default function App(){
   return(
     <BrowserRouter>
    <Routes>
     <Route path = '/map' element = {<Map />}/>
-    <Route path = '/' element = {<Homepage />}/>
+    <Route path = '/homepage' element = {<Homepage />}/>
    </Routes>
    </BrowserRouter>
    )

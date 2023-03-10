@@ -1,14 +1,28 @@
+import { GoogleLogin} from '@react-oauth/google'
+import jwt_decode from "jwt-decode";
 export default function Navbar ()
 {
     return <nav className="nav"> 
-        <h1>Holiday danger zones</h1>
+        <h1>Safe travel</h1>
         <ul>
             <li >
                 <a href="/map">Map</a>
             </li>
-            <li>
-                <a href="/login">Log in</a>
+            <li id="google-login">
+            <GoogleLogin
+                onSuccess={credentialResponse => {
+                console.log(credentialResponse.credential);
+
+                var decoded = jwt_decode(credentialResponse.credential);
+                console.log(decoded)
+                }}
+                onError={() => {
+                console.log('Login Failed');
+                
+                }}
+                />
             </li>
+
         </ul>
     </nav>
 }
