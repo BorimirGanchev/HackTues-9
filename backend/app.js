@@ -5,12 +5,13 @@ const connection_to_db = require("./db/main");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 require("dotenv").config();
-// const cors = require("cors");
-// app.use(
-//   cors({
-//     origin: "https://www.section.io",
-//   })
-// );
+const cors = require("cors");
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+  })
+);
+
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // Allow all domains to access the server
   res.header(
@@ -26,7 +27,7 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl:
-        "mongodb+srv://USER:USER_PASSWORD@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority",
+        "mongodb+srv://HackTues:HackTues@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority",
     }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
@@ -39,7 +40,7 @@ const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connection_to_db(
-      "mongodb+srv://USER:USER_PASSWORD@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority"
+      "mongodb+srv://HackTues:HackTues@task-manager.8d8g6sk.mongodb.net/HACKTUES?retryWrites=true&w=majority"
     );
     app.listen(port, () => {
       console.log("server is listening on port " + port);

@@ -10,7 +10,7 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 52.52047739093263, lng: 13.36653284549709
+  lat: 10.2324242, lng: 13.36653284549709
 };
 
 function Map() {
@@ -33,7 +33,7 @@ function Map() {
         }
         return temp_arr
       })
-      setPath(arr)
+      setPath(arr);
       console.log(arr)
       }catch(err) {
         console.log(err);
