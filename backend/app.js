@@ -5,8 +5,20 @@ const connection_to_db = require("./db/main");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 require("dotenv").config();
-
-//midleware
+// const cors = require("cors");
+// app.use(
+//   cors({
+//     origin: "https://www.section.io",
+//   })
+// );
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow all domains to access the server
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  ); // Allow specific headers
+  next();
+});
 app.use(
   session({
     secret: "secret",

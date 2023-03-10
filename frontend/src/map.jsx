@@ -14,20 +14,32 @@ const center = {
 };
 
 function Map() {
-
-  var coordinates = []
-
-  const getPolies = () => {
-    axios.get('http://localhost:3000/user/poliess').then(res => {
-      console.log(res)
-    })
-  }
   const [markerPosition, setMarkerPosition] = useState(null);
   const [canClick, setCanClick] = useState(false);
   const [mapClicks, setMapClicks] = useState(0);
-  function TurnOnSendButton(){
+  const [path, setPath] = useState([]);//will be an array passed by database
+  const [map, setMap] = React.useState(null)
 
-  }
+  var coordinates = []
+
+  const getPolies = async () => {
+     try
+     {
+      const POLLIES = await axios.get('http://localhost:3000/users/polies',{ crossDomain: true })
+      const arr = POLLIES.data.all_pollies.map(arr => {
+        var temp_arr = [];
+        for(let i = 0;i < arr.coordinates.length - 1;i++){
+          temp_arr.push(arr.coordinates[i])
+        }
+        return temp_arr
+      })
+      setPath(arr)
+      console.log(arr)
+      }catch(err) {
+        console.log(err);
+      }
+      
+    }
 
   const handleClick = () => {
       setCanClick((prevState) => {
@@ -63,42 +75,23 @@ function Map() {
     }
   };
 
-  const [path, setPath] = useState(
-    [
-      [
-        { lat: 52.52549080781086, lng: 13.398118538856465 },
-        { lat: 52.48578559055679, lng: 13.36653284549709 },
-        { lat: 52.48871246221608, lng: 13.44618372440334 },
-        { lat: 52.52549080781086, lng: 13.398118538856465 }
-      ],
-      [
-        { lat: 42.52549080781086, lng: 13.398118538856465 },
-        { lat: 42.48578559055679, lng: 13.36653284549709 },
-        { lat: 42.48871246221608, lng: 13.44618372440334 },
-        { lat: 42.52549080781086, lng: 13.398118538856465 }
-      ],
-      [
-        { lat: 32.52549080781086, lng: 13.398118538856465 },
-        { lat: 32.48578559055679, lng: 13.36653284549709 },
-        { lat: 32.48871246221608, lng: 13.44618372440334 },
-        { lat: 32.52549080781086, lng: 13.398118538856465 }
-      ],
-    ]
-  );//will be an array passed by database
-
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyCUA92dD6oKA7zAtGPfgYSj6ka9paVhRvg"
   })
-
-  const [map, setMap] = React.useState(null)
 
   const onLoad = React.useCallback(function callback(map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map)
-  }, [])
+  }, []);
+
+  React.useEffect(function(){
+    getPolies().then((res) => {
+      console.log(res)
+    })
+  },[])
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null)
