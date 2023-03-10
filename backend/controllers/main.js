@@ -1,11 +1,12 @@
 const User = require("../models/User");
 const Poly = require("../models/Poly");
+
 const createUser = async (req, res) => {
   try {
     const new_user = await User.create({
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password,
+      password: hashSync(req.body.password, 10),
     });
     res.status(200).json({ new_user });
   } catch (err) {
@@ -18,7 +19,7 @@ const getUser = async (req, res) => {
     const user = await User.find({ username: req.params.username });
     res.status(200).json({ user: user });
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 };
 
