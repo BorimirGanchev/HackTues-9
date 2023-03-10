@@ -11,7 +11,7 @@ export default function Homepage () {
         <div className='search-bar'>
           <SearchBar/>
         </div>
-        <Slider />
+        
       </div>
     )
 }
