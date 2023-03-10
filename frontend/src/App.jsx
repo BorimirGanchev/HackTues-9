@@ -27,7 +27,6 @@ export default function App(){
    <Routes>
     <Route path = '/map' element = {<Map />}/>
     <Route path = '/' element = {<Homepage />}/>
-    <Route path = '/login' element = {<Login/>}/>
    </Routes>
    </BrowserRouter>
    )
