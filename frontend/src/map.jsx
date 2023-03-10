@@ -51,10 +51,11 @@ function Map() {
         return !prevState;
       })
       // coordinates.push(coordinates[0]);
-      setCoordinates((prev) => ([...prev, coordinates[0]]));
+      // setCoordinates((prev) => ([...prev, coordinates[0]]));
       setCoordinates((prev) => {
         var arr = prev;
-        arr.push(coordinates[0])
+        console.log("----------------------------")
+        console.log(arr);
         return arr;
       })
       console.dir(coordinates)
@@ -119,7 +120,6 @@ function Map() {
       onClick={handleMapClick}
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={1}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
