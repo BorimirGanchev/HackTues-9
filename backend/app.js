@@ -37,7 +37,7 @@ app.use(
 );
 app.use(express.json());
 app.use("/users", users_router);
-require("./config/passport");
+require("./controllers/passport");
 
 app.use(passport.initialize());
 app.use(passport.session());
