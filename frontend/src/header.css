@@ -1,15 +1,13 @@
-/* @import url("https://fonts.googleapis.com/css?family=Inter"); */
-
 .header-container {
-    background-color:   #71287991;   
-    border: none;   
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.1);
-    padding-bottom: 0.8%;
+  background-color: #7a9b89;
+  border: none;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  height: 7vh;
 }
 
 .page-name {
-    padding-top: 0.5%;
-    padding-left: 60px;
-    font-size: 40px;
-    /* font-family: "Inter", SemiBold 600; */
+  padding-top: 0.5%;
+  padding-left: 3%;
+  font-size: 1.5rem;
+  font-family: "Inter", sans-serif;
 }
