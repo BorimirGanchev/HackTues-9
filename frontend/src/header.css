@@ -1,0 +1,13 @@
+.header-container {
+  background-color: #7a9b89;
+  border: none;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  height: 7vh;
+}
+
+.page-name {
+  padding-top: 0.5%;
+  padding-left: 3%;
+  font-size: 1.5rem;
+  font-family: "Inter", sans-serif;
+}
